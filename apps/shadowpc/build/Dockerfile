@@ -19,9 +19,9 @@ ARG REQUIRED_PACKAGES=" \
 RUN <<_INSTALL_PACKAGES
 apt-get update
 apt-get install -y --no-install-recommends $REQUIRED_PACKAGES
-wget -qO- http://repository.shadow.tech/shadow_signing.key | gpg --dearmor > /tmp/packages.shadowapp.gpg
+wget -qO- https://repository.shadow.tech/shadow_signing.key | gpg --dearmor > /tmp/packages.shadowapp.gpg
 install -o root -g root -m 644 /tmp/packages.shadowapp.gpg /etc/apt/trusted.gpg.d/
-echo "deb [arch=amd64] http://repository.shadow.tech/prod bullseye main" > /etc/apt/sources.list.d/shadow-prod.list
+echo "deb [arch=amd64] https://repository.shadow.tech/prod bullseye main" > /etc/apt/sources.list.d/shadow-prod.list
 rm -f /tmp/packages.shadowapp.gpg
 apt-get update
 apt-get install -y --no-install-recommends shadow-prod
