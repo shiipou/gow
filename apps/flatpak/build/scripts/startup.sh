@@ -14,21 +14,27 @@ if [ -z "$FLATPAK_APP_ID" ]; then
     exit 1
 fi
 
-# Optional: FLATPAK_REPO_URL for custom flatpak repository
+# Optional: FLATPAK_REPO_URL for custom flatpak repository (.flatpakrepo file URL)
+#           Default: https://flathub.org/repo/flathub.flatpakrepo
 # Optional: FLATPAK_REPO_NAME for custom repository name (defaults to "custom")
 
-# Add custom repository if specified
-if [ -n "$FLATPAK_REPO_URL" ]; then
-    REPO_NAME=${FLATPAK_REPO_NAME:-"custom"}
-    gow_log "Adding custom flatpak repository: $REPO_NAME from $FLATPAK_REPO_URL"
+# Set default repo URL to Flathub if not specified
+FLATPAK_REPO_URL=${FLATPAK_REPO_URL:-"https://flathub.org/repo/flathub.flatpakrepo"}
+REPO_NAME=${FLATPAK_REPO_NAME:-"custom"}
+
+# Add repository (uses --from for .flatpakrepo files)
+gow_log "Adding flatpak repository: $REPO_NAME from $FLATPAK_REPO_URL"
+if [[ "$FLATPAK_REPO_URL" == *.flatpakrepo ]]; then
+    flatpak remote-add --system --if-not-exists "$REPO_NAME" --from "$FLATPAK_REPO_URL" || true
+else
     flatpak remote-add --system --if-not-exists "$REPO_NAME" "$FLATPAK_REPO_URL" || true
 fi
 
 # Install the flatpak app if not already installed
 gow_log "Checking if $FLATPAK_APP_ID is installed..."
 if ! flatpak list --system --app --columns=application | grep -qx "$FLATPAK_APP_ID"; then
-    gow_log "Installing $FLATPAK_APP_ID..."
-    flatpak install -y --noninteractive --system "$FLATPAK_APP_ID"
+    gow_log "Installing $FLATPAK_APP_ID from $REPO_NAME..."
+    flatpak install -y --noninteractive --system "$REPO_NAME" "$FLATPAK_APP_ID"
     flatpak override --system "$FLATPAK_APP_ID" --filesystem=home
 else
     gow_log "$FLATPAK_APP_ID is already installed."

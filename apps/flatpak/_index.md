@@ -13,7 +13,7 @@ Simply provide the Flatpak app ID and the container will install and run it.
 
 ### Optional Environment Variables
 
-- `FLATPAK_REPO_URL`: URL to a custom Flatpak repository (if not using Flathub)
+- `FLATPAK_REPO_URL`: URL to a Flatpak repository `.flatpakrepo` file (default: `https://flathub.org/repo/flathub.flatpakrepo`)
 - `FLATPAK_REPO_NAME`: Name for the custom repository (defaults to "custom")
 - `FLATPAK_STARTUP_FLAGS`: Additional flags to pass to the `flatpak run` command
 
@@ -87,19 +87,19 @@ base_create_json = """
 
 ```toml
 [[apps]]
-title = "Custom App"
+title = "RSI Launcher"
 start_virtual_compositor = true
 
 [apps.runner]
 type = "docker"
-name = "WolfCustomApp"
+name = "WolfRSILauncher"
 image = "ghcr.io/games-on-whales/flatpak:edge"
 env = [
     "RUN_SWAY=true",
     "GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*",
-    "FLATPAK_APP_ID=com.example.CustomApp",
-    "FLATPAK_REPO_URL=https://example.com/repo/flatpakrepo",
-    "FLATPAK_REPO_NAME=example-repo"
+    "FLATPAK_APP_ID=com.robertsspaceindustries.RSILauncher",
+    "FLATPAK_REPO_URL=https://mactan-sc.github.io/rsilauncher/RSILauncher.flatpakrepo",
+    "FLATPAK_REPO_NAME=rsilauncher"
 ]
 devices = []
 mounts = []
