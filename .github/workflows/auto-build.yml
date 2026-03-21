@@ -2,8 +2,6 @@ name: Automated builds
 
 on:
   push:
-    branches:
-      - master
     paths:
       - "images/**"
       - ".github/workflows/*"
