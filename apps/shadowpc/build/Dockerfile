@@ -15,6 +15,9 @@ ARG REQUIRED_PACKAGES=" \
     libva-wayland2 \
     xdg-utils \
     libxcb-keysyms1 \
+    intel-media-va-driver-non-free \
+    mesa-va-drivers \
+    nvidia-vaapi-driver \
 "
 
 # Install ShadowPC
